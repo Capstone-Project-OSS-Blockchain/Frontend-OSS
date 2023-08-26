@@ -7,6 +7,7 @@ import axios from "axios";
 const Upload = () => {
   const router = useRouter();
   const [storedToken, setStoredToken] = useState("");
+  const [filenames, setFilenames] = useState([]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -30,6 +31,9 @@ const Upload = () => {
         }
       );
       console.log(response.data);
+      const existingFilenames = JSON.parse(localStorage.getItem("filenames")) || [];
+      const updatedFilenames = [...existingFilenames,response.data.FileName];
+      localStorage.setItem("filenames",JSON.stringify(updatedFilenames));
     } catch (err) {
       console.error("Axios Error", err);
       if (err.response && err.response.data && err.response.data.error) {

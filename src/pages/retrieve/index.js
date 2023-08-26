@@ -25,14 +25,13 @@ const Retrieve = () => {
   }
 
   const handleRetrieve = async () => {
-    if(selectedData === null){
-      alert("Please Select a Data Name");
-      return;
-    }
-
+    // if(selectedData === null){
+    //   alert("Please Select a Data Name");
+    //   return;
+    // }
     try {
       const response = await axios.get(
-        `https://backend-oss-production.up.railway.app/download/${selectedData}`,
+        "https://backend-oss-production.up.railway.app/download/ac3ca3f7-f635-461b-8e39-002c9d9e4847.pdf",
         {},
         {
           headers: {
