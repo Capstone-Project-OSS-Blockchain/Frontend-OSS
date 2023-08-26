@@ -1,7 +1,58 @@
 // buat home
 import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
-export default function index() {
+const Retrieve = () => {
+  const router = useRouter();
+  const [storedToken, setStoredToken] = useState("");
+  const [namaText, setStoredText] = useState("");
+  const [selectedData, setSelectedData] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setStoredToken(storedToken);
+    } else {
+      router.push("/login")
+    }
+  }, [router]);
+
+  const handleNameChange = (e) =>{
+    setStoredText(e.target.value);
+    setSelectedData(e.target.value);
+  }
+
+  const handleRetrieve = async () => {
+    if(selectedData === null){
+      alert("Please Select a Data Name");
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://backend-oss-production.up.railway.app/download/${selectedData}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${storedToken}`
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (err) {
+      console.error("Axios Error", err);
+      if (err.response && err.response.data && err.response.data.error) {
+        alert(err.response.data.error);
+      } else {
+        alert("An error occurred while processing your request.");
+      }
+    }
+  }
+
+
   return (
     <div id="layout" className="min-h-screen relative bg-white">
       <div className="navbar font-inter text-black bg-white">
@@ -210,6 +261,8 @@ export default function index() {
                 <span className="label-text">Select category</span>
               </label>
               <select className="select select-bordered">
+                value={namaText}
+                onChange={handleNameChange}
                 <option disabled selected>
                   Select
                 </option>
@@ -223,6 +276,7 @@ export default function index() {
             <button
               className="btn btn-outline btn-info ml-[84px] mt-[40px]"
               type="retrieve"
+              onClick={handleRetrieve}
             >
               Retrieve
             </button>
@@ -274,3 +328,5 @@ export default function index() {
     </div>
   );
 }
+
+export default Retrieve;
