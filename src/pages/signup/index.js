@@ -25,7 +25,7 @@ const Signup = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const requestBody = JSON.stringify({ username, email, password });
+      const requestBody = JSON.stringify({ email, username, password });
       const response = await axios.post(
         "https://backend-oss-production.up.railway.app/register",
         requestBody,
@@ -78,19 +78,20 @@ const Signup = () => {
             <form
               id="formArea"
               className="bg-white rounded-2xl w-[710px] h-[500px]"
-              // onSubmit={handleSubmit}
               action=""
               method="POST"
             >
               <div className="w-[580px] h-[81px] flex-col justify-start gap-2.5 inline-flex mt-[45px] ml-[63.5px]">
                 <div className="text-zinc-600 text-lg font-normal leading-relaxed">
-                  Full Name
+                  Username
                 </div>
                 <input
                   type="text"
-                  name="name"
-                  placeholder="John Doe"
+                  name="username"
+                  placeholder="JohnDoe"
                   className="px-[27px] py-[9px] text-black text-base font-normal bg-white rounded-sm border mt-[10px]"
+                  value={username}
+                  onChange={handleChangeUsername}
                 />
               </div>
 
@@ -103,6 +104,8 @@ const Signup = () => {
                   name="email"
                   placeholder="email@mail.com"
                   className="px-[27px] py-[9px] text-black text-base font-normal bg-white rounded-sm border mt-[10px]"
+                  value={email}
+                  onChange={handleChangeEmail}
                 />
               </div>
 
@@ -115,6 +118,8 @@ const Signup = () => {
                   name="password"
                   placeholder="password"
                   className="px-[27px] py-[9px] text-black text-base font-normal bg-white rounded-sm border mt-[10px]"
+                  value={password}
+                  onChange={handleChangePassword}
                 />
               </div>
 
@@ -138,6 +143,7 @@ const Signup = () => {
                 <button
                   className="justify-end w-[143px] h-[50px] mt-[54px] text-white bg-cBlack rounded-md active:scale-105 transition-all"
                   type="submit"
+                  onClick={submitHandler}
                 >
                   Sign Up
                 </button>

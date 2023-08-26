@@ -35,7 +35,8 @@ const Login = () => {
       alert(message);
       if (token) {
         localStorage.setItem("token", token);
-        router.push("/upload");
+        // router.push("/upload");
+        router.push("/");
       } else {
         alert("Please login as user");
       }
@@ -71,7 +72,6 @@ const Login = () => {
             <form
               id="formArea"
               className="bg-white rounded-2xl w-[710px] h-[385px]"
-              // onSubmit={handleSubmit}
               action=""
               method="POST"
             >
@@ -83,9 +83,9 @@ const Login = () => {
                   type="email"
                   name="email"
                   placeholder="email@mail.com"
+                  className="px-[27px] py-[9px] text-black text-base font-normal bg-white rounded-sm border mt-[10px]"
                   value={email}
                   onChange={handleChangeEmail}
-                  className="px-[27px] py-[9px] text-black text-base font-normal bg-white rounded-sm border mt-[10px]"
                 />
               </div>
 
@@ -96,10 +96,10 @@ const Login = () => {
                 <input
                   type="password"
                   name="password"
-                  value={password}
-                  onChange={handleChangePassword}
                   placeholder="password"
                   className="px-[27px] py-[9px] text-black text-base font-normal bg-white rounded-sm border mt-[10px]"
+                  value={password}
+                  onChange={handleChangePassword}
                 />
               </div>
 
