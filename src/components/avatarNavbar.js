@@ -1,7 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import Link from "next/link";
 
 const AvatarNavbar = () => {
@@ -11,17 +10,6 @@ const AvatarNavbar = () => {
     router.push("/login");
     alert("You have succesfully signed out. Please log in as user.");
   };
-
-  function App() {
-    const notify = () => toast("Wow so easy!");
-
-    return (
-      <div>
-        <button onClick={notify}>Notify!</button>
-        <ToastContainer />
-      </div>
-    );
-  }
 
   return (
     <div className="dropdown dropdown-end">

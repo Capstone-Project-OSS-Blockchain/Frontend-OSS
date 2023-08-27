@@ -1,16 +1,24 @@
-// buat home
 import Link from "next/link";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { useEffect, useState } from "react";
-import index from "..";
+import axios from "axios";
 
 const DocumentList = () => {
   const [data, setData] = useState(null);
+  const [storedToken, setStoredToken] = useState("");
+
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("documentData"));
+    const storedToken = localStorage.getItem("token");
     if (storedData) {
       setData(storedData);
+    }
+    if (storedToken) {
+      setStoredToken(storedToken);
+    } else {
+      alert("Please login before using the features");
+      router.push("/login");
     }
   }, []);
 
@@ -18,108 +26,47 @@ const DocumentList = () => {
     console.log(data);
   }, [data]);
 
+  const handleDownload = async (filename) => {
+    console.log(filename);
+    try {
+      const response = await axios.get(
+        `https://backend-oss-production.up.railway.app/download/${filename}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${storedToken}`,
+          },
+          responseType: "blob",
+        }
+      );
+
+      const blob = new Blob([response.data], {
+        type: response.headers["content-type"],
+      });
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = window.URL.createObjectURL(blob);
+      downloadLink.download = filename;
+
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+
+      document.body.removeChild(downloadLink);
+
+      alert("Successful download.");
+    } catch (err) {
+      console.error("Axios Error", err);
+      if (err.response && err.response.data && err.response.data.error) {
+        alert(err.response.data.error);
+      } else {
+        alert("An error occurred while processing your request.");
+      }
+    }
+  };
+
   return (
     <div id="layout" className="min-h-screen relative bg-white">
       <Navbar />
-      {/* <div className="navbar font-inter text-black bg-white">
-        <div className="navbar-start">
-          <div className="dropdown">
-            <label tabIndex={0} className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
-            </label>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-navbar"
-            >
-              <li>
-                <Link href={"/"}>Home</Link>
-              </li>
-
-              <li>
-                <Link href={"/upload"}>Features</Link>
-              </li>
-
-              <li>
-                <a>Guide</a>
-              </li>
-
-              <li>
-                <a>FAQ</a>
-              </li>
-
-              <li>
-                <a>Contact</a>
-              </li>
-            </ul>
-          </div>
-          <Link
-            className="btn btn-ghost normal-case text-xl ml-[75px]"
-            href={"/"}
-          >
-            BLOCKCHAIN PROJ.
-          </Link>
-        </div>
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
-            <li>
-              <Link href={"/"}>Home</Link>
-            </li>
-
-            <li>
-              <a>Features</a>
-            </li>
-
-            <li>
-              <a>Guide</a>
-            </li>
-
-            <li>
-              <a>FAQ</a>
-            </li>
-
-            <li>
-              <a>Contact</a>
-            </li>
-          </ul>
-        </div>
-        <div className="navbar-end pr-[112.25px]">
-          <a id="userIcon" className="pr-[24px]">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-          </a>
-          <div className="form-control">
-            <label className="label cursor-pointer">
-              <span className="label-text pr-[3px]">🇬🇧 EN </span>
-              <input type="checkbox" className="toggle" />
-            </label>
-          </div>
-        </div>
-      </div> */}
       <div id="body" className="grid grid-cols-2">
         {/* left grid */}
 
@@ -197,8 +144,8 @@ const DocumentList = () => {
               <p className="text-zinc-600 text-sm">
                 Elevate transparency in document progress. Harness the power of
                 blockchain for an indelible record of every change. Rest assured
-                with an unalterable audit trail, ensuring your documents'
-                journey is fortified by the strongest security.
+                with an unalterable audit trail, ensuring your documents journey
+                is fortified by the strongest security.
               </p>
             </div>
           </div>
@@ -208,7 +155,7 @@ const DocumentList = () => {
         <div id="col-2">
           <div className="tabs ml-[84px] mt-[98px]">
             <Link className="tab tab-lifted" href="/upload">
-              Upload
+              Generate Document
             </Link>
             {/* insert here */}
             <Link className="tab tab-lifted" href="/retrieve">
@@ -225,33 +172,51 @@ const DocumentList = () => {
             <div className="overflow-scroll  ml-[84px] mt-[35px]">
               <table className="table table-zebra flex flex-col items-start ">
                 {/* head */}
-                <thead>
+                <thead className="text-black size-xl">
                   <tr>
                     <th></th>
                     <th>File Name</th>
-                    <th>Last Added By</th>
-                    <th>Date Modified</th>
-                    <th>Audit Trail</th>
+                    <th>Last Added At</th>
+                    <th>Download Document</th>
+                    {/* <th>Audit Trail</th> */}
                   </tr>
                 </thead>
                 <tbody>
                   {data ? (
-                    data.files.map(document, (index) => {
+                    data.files.map((document, index) => {
                       return (
-                        <tr>
-                          <th>{index++}</th>
+                        <tr key={index}>
+                          <th>{index + 1}</th>
                           <td>{document.filename}</td>
                           <td>{document.timestamp}</td>
                           {/* button donlot */}
-                          <td>Blue</td>
+
+                          <td>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              className="w-7 h-7 ml-[50px] hover:cursor-pointer"
+                              onClick={() => handleDownload(document.filename)}
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                              />
+                            </svg>
+                          </td>
                           <td></td>
                         </tr>
                       );
                     })
                   ) : (
-                    <h1>Document unavailable</h1>
+                    <h1 className="text-black mt-[20px] px-2 text-xl">
+                      Document unavailable
+                    </h1>
                   )}
-                  ;
                 </tbody>
               </table>
               {/* pagination */}

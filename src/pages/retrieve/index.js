@@ -40,7 +40,7 @@ const Retrieve = () => {
           },
         }
       );
-      // console.log(response.data);
+      console.log(response.data);
 
       localStorage.setItem("documentData", JSON.stringify(response.data));
       alert("Successfully fetching data.");
@@ -243,7 +243,7 @@ const Retrieve = () => {
         <div id="col-2">
           <div className="tabs ml-[84px] mt-[98px]">
             <Link className="tab tab-lifted" href="/upload">
-              Upload
+              Generate Document
             </Link>
             {/* insert here */}
             <Link className="tab tab-lifted tab-active" href="/retrieve">
