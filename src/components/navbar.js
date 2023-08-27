@@ -5,23 +5,23 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 
 const Navbar = () => {
-  //   const router = useRouter();
-  //   const [storedToken, setStoredToken] = useState("");
+  const router = useRouter();
+  const [storedToken, setStoredToken] = useState("");
 
-  //   useEffect(() => {
-  //     const storedToken = localStorage.getItem("token");
-  //     if (storedToken) {
-  //       setStoredToken(storedToken);
-  //     } else {
-  //       alert("Please login before using the features");
-  //       router.push("/login");
-  //     }
-  //   }, [router]);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setStoredToken(storedToken);
+    } else {
+      alert("Please login before using the features");
+      router.push("/login");
+    }
+  }, [router]);
 
-  //   const [isLogin, setIsLogin] = useState(false);
-  //   const loginSuccess = () => {
-  //     setIsLogin(true);
-  //   };
+  // const [isLogin, setIsLogin] = useState(false);
+  // const loginSuccess = () => {
+  //   setIsLogin(true);
+  // };
 
   return (
     <div className="navbar font-inter text-black bg-white">
@@ -72,7 +72,7 @@ const Navbar = () => {
           className="btn btn-ghost normal-case text-xl ml-[75px]"
           href={"/"}
         >
-          BLOCKCHAIN PROJ.
+          OSS BLOCKCHAIN
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -99,14 +99,14 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end pr-[112.25px]">
-        {/* {loginSuccess ? <LoginNavbar /> : <AvatarIcon />} */}
-        <LoginNavbar />
-        <div className="form-control">
+        {!storedToken ? <LoginNavbar /> : <AvatarNavbar />}
+
+        {/* <div className="form-control">
           <label className="label cursor-pointer">
             <span className="label-text pr-[3px]"> EN </span>
-            <input type="checkbox" className="toggle checked bg-white" />
+            <input type="checkbox" className="toggle toggle-success" />
           </label>
-        </div>
+        </div> */}
       </div>
     </div>
   );

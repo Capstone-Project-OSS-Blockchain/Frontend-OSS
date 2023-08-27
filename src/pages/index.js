@@ -26,7 +26,7 @@ export default function index() {
         <div className="hero min-h-screen  bg-white">
           <div className="hero-content text-center text-black">
             <div className="max-w-xl">
-              <h1 className="text-5xl font-bold">BLOCKCHAIN PROJ.</h1>
+              <h1 className="text-5xl font-bold">OSS BLOCKCHAIN</h1>
               <p className="py-6 w-[507px]">
                 Empowering trust through blockchain. Seamlessly manage, secure,
                 and track documents. Elevate transparency, collaboration, and

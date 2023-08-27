@@ -2,8 +2,22 @@
 import Link from "next/link";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import { useEffect, useState } from "react";
+import index from "..";
 
-export default function index() {
+const DocumentList = () => {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("documentData"));
+    if (storedData) {
+      setData(storedData);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <div id="layout" className="min-h-screen relative bg-white">
       <Navbar />
@@ -216,54 +230,40 @@ export default function index() {
                     <th></th>
                     <th>File Name</th>
                     <th>Last Added By</th>
-                    <th>Audit Trail</th>
                     <th>Date Modified</th>
+                    <th>Audit Trail</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {/* row 1 */}
-                  <tr>
-                    <th>1</th>
-                    <td>Cy Ganderton</td>
-                    <td>Quality Control Specialist</td>
-                    <td>Blue</td>
-                    <td></td>
-                  </tr>
-                  {/* row 2 */}
-                  <tr>
-                    <th>2</th>
-                    <td>Hart Hagerty</td>
-                    <td>Desktop Support Technician</td>
-                    <td>Purple</td>
-                    <td></td>
-                  </tr>
-                  {/* row 3 */}
-                  <tr>
-                    <th>3</th>
-                    <td>Brice Swyre</td>
-                    <td>Tax Accountant</td>
-                    <td>Red</td>
-                    <td></td>
-                  </tr>
-                  {/* row 4 */}
-                  <tr>
-                    <th>4</th>
-                    <td>Brice Swyre</td>
-                    <td>Tax Accountant</td>
-                    <td>Red</td>
-                    <td></td>
-                  </tr>
+                  {data ? (
+                    data.files.map(document, (index) => {
+                      return (
+                        <tr>
+                          <th>{index++}</th>
+                          <td>{document.filename}</td>
+                          <td>{document.timestamp}</td>
+                          {/* button donlot */}
+                          <td>Blue</td>
+                          <td></td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <h1>Document unavailable</h1>
+                  )}
+                  ;
                 </tbody>
               </table>
               {/* pagination */}
               <div className="mt-[20px] flex flex-col items-center justify-center">
                 <div className="join">
-                  <button className="join-item btn btn-outline">
-                    Previous
+                  <button className="join-item btn btn-outline">First</button>
+                  <button className="join-item btn btn-active text-white">
+                    1
                   </button>
-                  <button className="join-item btn btn-active ">1</button>
-                  <button className="join-item btn ">2</button>
-                  <button className="join-item btn btn-outline">Next</button>
+                  <button className="join-item btn text-white">2</button>
+                  <button className="join-item btn text-white">3</button>
+                  <button className="join-item btn btn-outline">Last</button>
                 </div>
               </div>
             </div>
@@ -273,4 +273,6 @@ export default function index() {
       <Footer />
     </div>
   );
-}
+};
+
+export default DocumentList;

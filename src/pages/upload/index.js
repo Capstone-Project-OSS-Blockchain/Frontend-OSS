@@ -241,7 +241,7 @@ const Upload = () => {
         <div id="col-2">
           <div className="tabs ml-[84px] mt-[98px]">
             <Link className="tab tab-lifted tab-active" href="/upload">
-              Upload
+              Generate Document
             </Link>
             {/* insert here */}
             <Link className="tab tab-lifted" href="/retrieve">

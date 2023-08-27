@@ -37,6 +37,13 @@ const Login = () => {
         localStorage.setItem("token", token);
         // router.push("/upload");
         router.push("/");
+        return (
+          <div className="toast toast-end">
+            <div className="alert alert-success">
+              <span>Login Successful</span>
+            </div>
+          </div>
+        );
       } else {
         alert("Please login as user");
       }
@@ -57,7 +64,7 @@ const Login = () => {
       <div id="col-1" className="ml-[100px]">
         {/* Config font style */}
         <Link href={"/"}>
-          <p className="text-cBlack my-[96px]  font-bold">BLOCKCHAIN PROJ.</p>
+          <p className="text-cBlack my-[96px]  font-bold">OSS BLOCKCHAIN</p>
         </Link>
         <p className="text-zinc-900 text-[56px] font-semibold leading-[78.40px]">
           Welcome Back
@@ -103,17 +110,6 @@ const Login = () => {
                 />
               </div>
 
-              {/* <div className="w-[580px] h-[81px] flex-col justify-start gap-2.5 inline-flex ml-[63.5px]">
-                <div className="text-zinc-600 text-lg font-normal leading-relaxed">
-                  Password
-                </div>
-                <div className="w-[580px] h-[45px] bg-white rounded-sm border border-gray-200 justify-start items-start gap-2.5 inline-flex">
-                  <div className="px-[27px] py-[9px] text-stone-300 text-base font-normal">
-                    Placeholder here
-                  </div>
-                </div>
-              </div> */}
-
               <div className="flex items-center justify-between px-[63.5px]">
                 <p className="mt-[69.5px] text-zinc-600">
                   Don’t have an account?
@@ -130,6 +126,7 @@ const Login = () => {
                 </button>
               </div>
             </form>
+
             {/* spacing belum bisa */}
             {/* <div
               id="policies"

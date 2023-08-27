@@ -1,10 +1,10 @@
-// buat home
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import { string } from "prop-types";
 
 const Retrieve = () => {
   const router = useRouter();
@@ -14,6 +14,12 @@ const Retrieve = () => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setStoredToken(storedToken);
+    } else {
+      alert("Please login before using the features");
+      router.push("/login");
+    }
   }, [router]);
 
   const handleNameChange = (e) => {
@@ -22,21 +28,11 @@ const Retrieve = () => {
   };
 
   const handleRetrieve = async () => {
-    if (storedToken) {
-      setStoredToken(storedToken);
-    } else {
-      alert("Please login before using the features");
-      router.push("/login");
-    }
-    if (selectedData === null) {
-      alert("Please Select a Data Name");
-      return;
-    }
-
     try {
       const response = await axios.get(
-        `https://backend-oss-production.up.railway.app/download/${selectedData}`,
-        {},
+        // `https://backend-oss-production.up.railway.app/download/${selectedData}`,
+        "https://backend-oss-production.up.railway.app/getFiles",
+
         {
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +40,10 @@ const Retrieve = () => {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
+
+      localStorage.setItem("documentData", JSON.stringify(response.data));
+      alert("Successfully fetching data.");
     } catch (err) {
       console.error("Axios Error", err);
       if (err.response && err.response.data && err.response.data.error) {
@@ -159,7 +158,6 @@ const Retrieve = () => {
       </div> */}
       <div id="body" className="grid grid-cols-2">
         {/* left grid */}
-
         <div id="col-1" className="ml-[100px] mt-[84px]">
           {/* heading */}
           <p className="text-zinc-900 text-[40px] font-semibold leading-[52px]">

@@ -62,11 +62,11 @@ const Signup = () => {
       <div id="col-1" className="ml-[100px]">
         {/* Config font style */}
         <Link href={"/"}>
-          <p className="text-cBlack my-[96px]  font-bold">BLOCKCHAIN PROJ.</p>
+          <p className="text-cBlack my-[96px]  font-bold">OSS BLOCKCHAIN</p>
         </Link>
         <div className="text-zinc-900 text-[56px] font-semibold leading-[78.40px]">
           <p>Welcome to</p>
-          <p>BLOCKCHAIN PROJ.</p>
+          <p>OSS BLOCKCHAIN.</p>
         </div>
         <p className="text-zinc-600 text-lg font-semibold">
           Fill up the form to create a new account.
